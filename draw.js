@@ -21,6 +21,16 @@ function main() {
         console.log("Failde to get context for WebGL");
         return;
     }
+    const vsShader = gl.createShader(gl.VERTEX_SHADER);
+    gl.shaderSource(vsShader, vsSource);
+    gl.compileShader(vsShader);
+    gl.attachShader(program, vsShader);
+
+    const fsShader = gl.createShader(gl.FRAGMENT_SHADER);
+    gl.shaderSource(fsShader, fsSource);
+    gl.compileShader(fsShader);
+    gl.attachShader(program, fsShader);
+
     const program = gl.createProgram();
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
