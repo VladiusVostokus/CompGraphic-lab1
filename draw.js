@@ -1,17 +1,18 @@
 'use strict';
 
-const vsSource = `
-#version 300 es
+const vsSource = `#version 300 es
 
 void main() {
     gl_Position = vec4(0.0, 0.0, 0.0, 1.0);
 }`;
 
-const fsSource = `
-#version 300 es
+const fsSource = `#version 300 es
+precision mediump float;
+
+out vec4 fragColor
 
 void main() {
-    gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+    fragColor = vec4(1.0, 1.0, 1.0, 1.0);
 }`;
 
 function main() {
