@@ -4,20 +4,21 @@ const vsSource = `#version 300 es
 
 void main() {
     gl_Position = vec4(0.0, 0.0, 0.0, 1.0);
+    gl_PointSize = 100.0;
 }`;
 
 const fsSource = `#version 300 es
 precision mediump float;
 
-out vec4 fragColor
+out vec4 fragColor;
 
 void main() {
-    fragColor = vec4(1.0, 1.0, 1.0, 1.0);
+    fragColor = vec4(0.0, 1.0, 1.0, 1.0);
 }`;
 
 function main() {
     const canvas = document.querySelector("#glcanvas");
-    const gl = canvas.getContext("webgl");
+    const gl = canvas.getContext("webgl2");
     if (!gl) {
         console.log("Failde to get context for WebGL");
         return;
