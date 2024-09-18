@@ -5,8 +5,8 @@ uniform float uPointSize;
 uniform vec2 uPosition;
 
 void main() {
-    gl_Position = vec4(uPosition, 0.0, 1.0);
     gl_PointSize = uPointSize;
+    gl_Position = vec4(uPosition, 0.0, 1.0);
 }`;
 
 const fsSource = `#version 300 es
@@ -53,15 +53,14 @@ function main() {
     gl.useProgram(program);
 
     const uPointSize = gl.getUniformLocation(program, 'uPointSize');
-    const uPosition = gl.getUniformLocation(program, 'uPositon');
-    gl.uniform1f(uPointSize, 150.0);
-    gl.uniform2f(uPosition, 0, 1.0);
+    const uPosition = gl.getUniformLocation(program, 'uPosition');
+    gl.uniform1f(uPointSize, 100);
+    gl.uniform2f(uPosition, 0.6, 0.5);
 
     gl.drawArrays(gl.POINTS, 0, 1);
 
-    gl.uniform1f(uPointSize, 30.0);
-    gl.uniform2f(uPosition, 0.8, -0.6);
+    gl.uniform1f(uPointSize, 20);
+    gl.uniform2f(uPosition, 0.0, 0.0);
 
     gl.drawArrays(gl.POINTS, 0, 1);
 }
-
