@@ -46,6 +46,9 @@ function main() {
 
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
+    
+    canvas.width = canvas.clientWidth;
+    canvas.height = canvas.clientHeight;
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.useProgram(program);
 
