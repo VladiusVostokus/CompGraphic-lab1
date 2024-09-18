@@ -46,12 +46,18 @@ function main() {
 
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.viewport(0, 0, canvas.width, canvas.height);
     gl.useProgram(program);
 
     const uPointSize = gl.getUniformLocation(program, 'uPointSize');
     const uPosition = gl.getUniformLocation(program, 'uPositon');
-    gl.uniform1f(uPointSize, 100.0);
-    gl.uniform2f(uPosition, 0, 0);
+    gl.uniform1f(uPointSize, 150.0);
+    gl.uniform2f(uPosition, 0, 1.0);
+
+    gl.drawArrays(gl.POINTS, 0, 1);
+
+    gl.uniform1f(uPointSize, 30.0);
+    gl.uniform2f(uPosition, 0.8, -0.6);
 
     gl.drawArrays(gl.POINTS, 0, 1);
 }
