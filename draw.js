@@ -1,10 +1,12 @@
 'use strict';
 
 const vsSource = `#version 300 es
+uniform float uPointSize;
+uniform vec2 uPosition;
 
 void main() {
-    gl_Position = vec4(0.0, 0.0, 0.0, 1.0);
-    gl_PointSize = 100.0;
+    gl_Position = vec4(uPosition, 0.0, 1.0);
+    gl_PointSize = uPointSize;
 }`;
 
 const fsSource = `#version 300 es
@@ -45,6 +47,12 @@ function main() {
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.useProgram(program);
+
+    const uPointSize = gl.getUniformLocation(program, 'uPointSize');
+    const uPosition = gl.getUniformLocation(program, 'uPositon');
+    gl.uniform1f(uPointSize, 100.0);
+    gl.uniform2f(uPosition, 0, 0);
+
     gl.drawArrays(gl.POINTS, 0, 1);
 }
 
