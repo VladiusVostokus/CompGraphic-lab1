@@ -1,12 +1,12 @@
 'use strict';
 
 const vsSource = `#version 300 es
-uniform float uPointSize;
-uniform vec2 uPosition;
+in float aPointSize;
+in vec2 aPosition;
 
 void main() {
-    gl_PointSize = uPointSize;
-    gl_Position = vec4(uPosition, 0.0, 1.0);
+    gl_PointSize = aPointSize;
+    gl_Position = vec4(aPosition, 0.0, 1.0);
 }`;
 
 const fsSource = `#version 300 es
@@ -52,15 +52,23 @@ function main() {
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.useProgram(program);
 
-    const uPointSize = gl.getUniformLocation(program, 'uPointSize');
-    const uPosition = gl.getUniformLocation(program, 'uPosition');
-    gl.uniform1f(uPointSize, 100);
-    gl.uniform2f(uPosition, 0.6, 0.5);
+    const aPointSize = gl.getAttribLocation(program, 'aPointSize');
+    const aPosition = gl.getAttribLocation(program, 'aPosition');
+    gl.enableVertexAttribArray(aPointSize);
+    gl.enableVertexAttribArray(aPosition);
 
-    gl.drawArrays(gl.POINTS, 0, 1);
+    const bufferData = new Float32Array([
+        0, 0,       100,
+        -0.5, -0.5, 50,
+        0.6 , 0.6,  30,
+    ]);
+    const buffer = gl.createBuffer();
 
-    gl.uniform1f(uPointSize, 20);
-    gl.uniform2f(uPosition, 0.0, 0.0);
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+    gl.bufferData(gl.ARRAY_BUFFER, bufferData, gl.STATIC_DRAW);
 
-    gl.drawArrays(gl.POINTS, 0, 1);
+    gl.vertexAttribPointer(aPosition, 2 , gl.FLOAT, false, 3 * 4, 0);
+    gl.vertexAttribPointer(aPointSize, 1 , gl.FLOAT, false, 3 * 4, 2 * 4);
+
+    gl.drawArrays(gl.POINTS, 0, 3);
 }
