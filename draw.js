@@ -3,19 +3,23 @@
 const vsSource = `#version 300 es
 in float aPointSize;
 in vec2 aPosition;
+in vec3 aColor;
+out vec3 vColor;
 
 void main() {
     gl_PointSize = aPointSize;
     gl_Position = vec4(aPosition, 0.0, 1.0);
+    vColor = aColor;
 }`;
 
 const fsSource = `#version 300 es
 precision mediump float;
 
+in vec3 vColor;
 out vec4 fragColor;
 
 void main() {
-    fragColor = vec4(0.0, 1.0, 1.0, 1.0);
+    fragColor = vec4(vColor, 1.0);
 }`;
 
 function main() {
@@ -44,7 +48,7 @@ function main() {
         console.log(gl.getShaderInfoLog(fsShader));
     }
 
-    gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    gl.clearColor(0.5, 0.2, 0.6, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
     
     canvas.width = canvas.clientWidth;
@@ -54,21 +58,24 @@ function main() {
 
     const aPointSize = gl.getAttribLocation(program, 'aPointSize');
     const aPosition = gl.getAttribLocation(program, 'aPosition');
+    const aColor = gl.getAttribLocation(program,'aColor');
     gl.enableVertexAttribArray(aPointSize);
     gl.enableVertexAttribArray(aPosition);
+    gl.enableVertexAttribArray(aColor);
 
     const bufferData = new Float32Array([
-        0, 0,       100,
-        -0.5, -0.5, 50,
-        0.6 , 0.6,  30,
+        0, 0,       100,    1,0,0,
+        -0.5, -0.5, 50,     0,1,0,
+        0.6 , 0.6,  30,     0,0,1,
     ]);
     const buffer = gl.createBuffer();
 
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
     gl.bufferData(gl.ARRAY_BUFFER, bufferData, gl.STATIC_DRAW);
 
-    gl.vertexAttribPointer(aPosition, 2 , gl.FLOAT, false, 3 * 4, 0);
-    gl.vertexAttribPointer(aPointSize, 1 , gl.FLOAT, false, 3 * 4, 2 * 4);
+    gl.vertexAttribPointer(aPosition, 2 , gl.FLOAT, false, 6 * 4, 0);
+    gl.vertexAttribPointer(aPointSize, 1 , gl.FLOAT, false, 6 * 4, 2 * 4);
+    gl.vertexAttribPointer(aColor, 3 , gl.FLOAT, false, 6 * 4, 3 * 4);
 
     gl.drawArrays(gl.POINTS, 0, 3);
 }
