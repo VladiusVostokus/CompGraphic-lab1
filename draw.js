@@ -64,9 +64,13 @@ function main() {
     gl.enableVertexAttribArray(aColor);
 
     const bufferData = new Float32Array([
-        0.0, 0.4,       100,    1,0,0,
-        -0.5, -0.5, 50,     0,1,0,
-        0.6 , -0.5,  30,     0,0,1,
+        -0.5,  0.5,     100,    1,0,0,
+       -0.5, -0.5,     50,     0,1,0,
+        0.5, -0.5,     30,     0,0,1,
+        -0.5,  0.5,     100,    1,0,0,
+        0.5, 0.5,     50,     0,1,0,
+        0.5, -0.5,     30,     0,0,1,
+        
     ]);
     const buffer = gl.createBuffer();
 
@@ -77,6 +81,6 @@ function main() {
     gl.vertexAttribPointer(aPointSize, 1 , gl.FLOAT, false, 6 * 4, 2 * 4);
     gl.vertexAttribPointer(aColor, 3 , gl.FLOAT, false, 6 * 4, 3 * 4);
 
-    gl.drawArrays(gl.POINTS, 0, 3);
-    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    gl.drawArrays(gl.POINTS, 0, 6);
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
 }
