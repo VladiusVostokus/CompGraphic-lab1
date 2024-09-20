@@ -74,13 +74,39 @@ function main() {
     ]);
     const buffer = gl.createBuffer();
 
+    /*
+    const elemVertexData = new Float32Array([
+        -0.5,  0.5,  1,0,0,   
+        -0.5, -0.5,  0,1,0,
+        0.5, -0.5,   0,0,1,
+        0.5, 0.5,    0,1,0,
+    ]);
+
+    const elemVertexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, elemVertexBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, elemVertexData, gl.STATIC_DRAW);
+
+
+    const elemIndexData = new Uint8Array([
+        0,1,2,
+        0,3,2,
+    ]);
+
+    const elemIndexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, elemIndexBuffer);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, elemIndexData, gl.STATIC_DRAW);
+    */
+
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
     gl.bufferData(gl.ARRAY_BUFFER, bufferData, gl.STATIC_DRAW);
+
+    //gl.vertexAttribPointer(aPosition, 2 , gl.FLOAT, false, 5 * 4, 0);
+    //gl.vertexAttribPointer(aColor, 3 , gl.FLOAT, false, 5 * 4, 2 * 4);
 
     gl.vertexAttribPointer(aPosition, 2 , gl.FLOAT, false, 6 * 4, 0);
     gl.vertexAttribPointer(aPointSize, 1 , gl.FLOAT, false, 6 * 4, 2 * 4);
     gl.vertexAttribPointer(aColor, 3 , gl.FLOAT, false, 6 * 4, 3 * 4);
 
-    gl.drawArrays(gl.POINTS, 0, 6);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
+    //gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_BYTE, 0);
 }
