@@ -1,5 +1,7 @@
 'use strict';
 
+import { mat4 } from 'gl-matrix';
+
 const vsSource = `#version 300 es
 in float aPointSize;
 in vec2 aPosition;
@@ -59,9 +61,7 @@ function main() {
     const aPointSize = gl.getAttribLocation(program, 'aPointSize');
     const aPosition = gl.getAttribLocation(program, 'aPosition');
     const aColor = gl.getAttribLocation(program,'aColor');
-    gl.enableVertexAttribArray(aPointSize);
-    gl.enableVertexAttribArray(aPosition);
-    gl.enableVertexAttribArray(aColor);
+
 
     const bufferData = new Float32Array([
         -0.5,  0.5,     100,    1,0,0,
@@ -102,11 +102,20 @@ function main() {
 
     //gl.vertexAttribPointer(aPosition, 2 , gl.FLOAT, false, 5 * 4, 0);
     //gl.vertexAttribPointer(aColor, 3 , gl.FLOAT, false, 5 * 4, 2 * 4);
+    const vao = gl.createVertexArray();
+    gl.bindVertexArrayObject(vao);
 
     gl.vertexAttribPointer(aPosition, 2 , gl.FLOAT, false, 6 * 4, 0);
     gl.vertexAttribPointer(aPointSize, 1 , gl.FLOAT, false, 6 * 4, 2 * 4);
     gl.vertexAttribPointer(aColor, 3 , gl.FLOAT, false, 6 * 4, 3 * 4);
 
+    gl.enableVertexAttribArray(aPointSize);
+    gl.enableVertexAttribArray(aPosition);
+    gl.enableVertexAttribArray(aColor);
+
+    gl.bindVertexArrayObject(null);
+
+    gl.bindVertexArrayObject(vao);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
     //gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_BYTE, 0);
 }
