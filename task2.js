@@ -2,11 +2,14 @@
 
 const vsSource = `#version 300 es
 in vec2 aPosition;
+uniform mat4 uModelViewMatrix;
+uniform mat4 uProjectionMatrix;
 in vec3 aColor;
 out vec3 vColor;
 
 void main() {
-    gl_Position = vec4(aPosition, 0.0, 1.0);
+    gl_Position = uProjectionMatrix * uModelViewMatrix * vec4(aPosition, 0.0, 1.0);
+    //gl_Position =  vec4(aPosition, 0.0, 1.0);
     vColor = aColor;
 }`;
 
@@ -57,7 +60,26 @@ function main() {
     const aPosition = gl.getAttribLocation(program, 'aPosition');
     const aColor = gl.getAttribLocation(program,'aColor');
 
+    const uModelViewMatrix = gl.getUniformLocation(program,'uModelViewMatrix');
+    const uProjectionMatrix = gl.getUniformLocation(program,'uProjectionMatrix');
 
+    const modelMatrix = new Float32Array([
+        1,0,0,0,
+        0,1,0,0,
+        0,0,1,0,
+        0,0,0,1,
+    ]);
+
+    const projectionMatrix = new Float32Array([
+        1,0,0,0,
+        0,1,0,0,
+        0,0,1,0,
+        0,0,0,1,
+    ]);
+
+    gl.uniformMatrix4fv(uModelViewMatrix, false, modelMatrix);
+    gl.uniformMatrix4fv(uProjectionMatrix, false, projectionMatrix);
+    
     const bufferData = new Float32Array([
         -0.5,  0.5,         1,0,0,
        -0.5, -0.5,          0,1,0,
@@ -97,16 +119,12 @@ function main() {
 
     //gl.vertexAttribPointer(aPosition, 2 , gl.FLOAT, false, 5 * 4, 0);
     //gl.vertexAttribPointer(aColor, 3 , gl.FLOAT, false, 5 * 4, 2 * 4);
-    const vao = gl.createVertexArray();
-    gl.bindVertexArray(vao);
     gl.vertexAttribPointer(aPosition, 2 , gl.FLOAT, false, 5 * 4, 0);
     gl.vertexAttribPointer(aColor, 3 , gl.FLOAT, false, 5 * 4, 2 * 4);
 
     gl.enableVertexAttribArray(aPosition);
     gl.enableVertexAttribArray(aColor);
-    gl.bindVertexArray(null);
 
-    gl.bindVertexArray(vao);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
     //gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_BYTE, 0);
 }
