@@ -1,5 +1,7 @@
 'use strict';
 
+import { mat4 } from 'gl-matrix';
+
 const vsSource = `#version 300 es
 in vec2 aPosition;
 in vec3 aColor;
