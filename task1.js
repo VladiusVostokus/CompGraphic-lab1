@@ -1,14 +1,11 @@
 'use strict';
 
-
 const vsSource = `#version 300 es
-in float aPointSize;
 in vec2 aPosition;
 in vec3 aColor;
 out vec3 vColor;
 
 void main() {
-    gl_PointSize = aPointSize;
     gl_Position = vec4(aPosition, 0.0, 1.0);
     vColor = aColor;
 }`;
@@ -57,62 +54,25 @@ function main() {
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.useProgram(program);
 
-    const aPointSize = gl.getAttribLocation(program, 'aPointSize');
     const aPosition = gl.getAttribLocation(program, 'aPosition');
     const aColor = gl.getAttribLocation(program,'aColor');
 
 
     const bufferData = new Float32Array([
-        -0.5,  0.5,     100,    1,0,0,
-       -0.5, -0.5,     50,     0,1,0,
-        0.5, -0.5,     30,     0,0,1,
-        -0.5,  0.5,     100,    1,0,0,
-        0.5, 0.5,     50,     0,1,0,
-        0.5, -0.5,     30,     0,0,1,
-        
+        0.0,  0.5,          1,0,0,
+       -0.5, -0.5,          0,1,0,
+        0.5, -0.5,          0,0,1,  
     ]);
     const buffer = gl.createBuffer();
-
-    /*
-    const elemVertexData = new Float32Array([
-        -0.5,  0.5,  1,0,0,   
-        -0.5, -0.5,  0,1,0,
-        0.5, -0.5,   0,0,1,
-        0.5, 0.5,    0,1,0,
-    ]);
-
-    const elemVertexBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, elemVertexBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, elemVertexData, gl.STATIC_DRAW);
-
-
-    const elemIndexData = new Uint8Array([
-        0,1,2,
-        0,3,2,
-    ]);
-
-    const elemIndexBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, elemIndexBuffer);
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, elemIndexData, gl.STATIC_DRAW);
-    */
-
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
     gl.bufferData(gl.ARRAY_BUFFER, bufferData, gl.STATIC_DRAW);
 
-    //gl.vertexAttribPointer(aPosition, 2 , gl.FLOAT, false, 5 * 4, 0);
-    //gl.vertexAttribPointer(aColor, 3 , gl.FLOAT, false, 5 * 4, 2 * 4);
-    const vao = gl.createVertexArray();
-    gl.bindVertexArray(vao);
-    gl.vertexAttribPointer(aPosition, 2 , gl.FLOAT, false, 6 * 4, 0);
-    gl.vertexAttribPointer(aPointSize, 1 , gl.FLOAT, false, 6 * 4, 2 * 4);
-    gl.vertexAttribPointer(aColor, 3 , gl.FLOAT, false, 6 * 4, 3 * 4);
 
-    gl.enableVertexAttribArray(aPointSize);
+    gl.vertexAttribPointer(aPosition, 2 , gl.FLOAT, false, 5 * 4, 0);
+    gl.vertexAttribPointer(aColor, 3 , gl.FLOAT, false, 5 * 4, 2 * 4);
+
     gl.enableVertexAttribArray(aPosition);
     gl.enableVertexAttribArray(aColor);
-    gl.bindVertexArray(null);
 
-    gl.bindVertexArray(vao);
-    gl.drawArrays(gl.TRIANGLES, 0, 6);
-    //gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_BYTE, 0);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
 }
