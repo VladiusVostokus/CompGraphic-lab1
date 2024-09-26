@@ -60,19 +60,6 @@ function main() {
     const aColor = gl.getAttribLocation(program,'aColor');
     const uProjectionMatrix = gl.getUniformLocation(program,'uProjectionMatrix');
 
-
-    const bufferData = new Float32Array([
-        -0.5,  0.5,         1,0,0,
-       -0.5, -0.5,          0,1,0,
-        0.5, -0.5,          0,0,1,
-        -0.5,  0.5,         1,0,0,
-        0.5, 0.5,           0,1,0,
-        0.5, -0.5,          0,0,1,
-        
-    ]);
-    const buffer = gl.createBuffer();
-
-    /*
     const elemVertexData = new Float32Array([
         -0.5,  0.5,  1,0,0,   
         -0.5, -0.5,  0,1,0,
@@ -93,13 +80,7 @@ function main() {
     const elemIndexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, elemIndexBuffer);
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, elemIndexData, gl.STATIC_DRAW);
-    */
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-    gl.bufferData(gl.ARRAY_BUFFER, bufferData, gl.STATIC_DRAW);
-
-    //gl.vertexAttribPointer(aPosition, 2 , gl.FLOAT, false, 5 * 4, 0);
-    //gl.vertexAttribPointer(aColor, 3 , gl.FLOAT, false, 5 * 4, 2 * 4);
     gl.vertexAttribPointer(aPosition, 2 , gl.FLOAT, false, 5 * 4, 0);
     gl.vertexAttribPointer(aColor, 3 , gl.FLOAT, false, 5 * 4, 2 * 4);
 
@@ -124,11 +105,10 @@ function main() {
         ]);
     
         gl.uniformMatrix4fv(uProjectionMatrix, false, projectionMatrix);
-        gl.drawArrays(gl.TRIANGLES, 0, 6);
+        gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_BYTE, 0);
         requestAnimationFrame(draw);
     };
     draw();
-    //gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_BYTE, 0);
 }
 
 
