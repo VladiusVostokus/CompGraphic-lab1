@@ -63,11 +63,6 @@ function main() {
     const uModelViewMatrix = gl.getUniformLocation(program,'uModelViewMatrix');
     const uProjectionMatrix = gl.getUniformLocation(program,'uProjectionMatrix');
 
-    const angle = 45.0;
-    const radian = Math.PI * angle / 180;
-    const cos = Math.cos(radian);
-    const sin = Math.sin(radian);
-
 
     const modelMatrix = new Float32Array([
         1,0,0,0,
@@ -76,15 +71,7 @@ function main() {
         0,0,0,1,
     ]);
 
-    const projectionMatrix = new Float32Array([
-        cos,sin,0,0,
-        -sin,cos,0,0,
-        0,0,1,0,
-        0,0,0,1,
-    ]);
-
     gl.uniformMatrix4fv(uModelViewMatrix, false, modelMatrix);
-    gl.uniformMatrix4fv(uProjectionMatrix, false, projectionMatrix);
 
     const bufferData = new Float32Array([
         -0.5,  0.5,         1,0,0,
@@ -130,7 +117,29 @@ function main() {
 
     gl.enableVertexAttribArray(aPosition);
     gl.enableVertexAttribArray(aColor);
+    let angle = 0.0;
 
-    gl.drawArrays(gl.TRIANGLES, 0, 6);
+    const draw = () => {
+        gl.clearColor(0.5, 0.2, 0.6, 1.0);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        angle++;
+        const radian = Math.PI * angle / 180;
+        const cos = Math.cos(radian);
+        const sin = Math.sin(radian);
+    
+        const projectionMatrix = new Float32Array([
+            cos,sin,0,0,
+            -sin,cos,0,0,
+            0,0,1,0,
+            0,0,0,1,
+        ]);
+    
+        gl.uniformMatrix4fv(uProjectionMatrix, false, projectionMatrix);
+        gl.drawArrays(gl.TRIANGLES, 0, 6);
+        requestAnimationFrame(draw);
+    };
+    draw();
     //gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_BYTE, 0);
 }
+
+
