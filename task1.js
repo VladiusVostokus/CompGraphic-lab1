@@ -1,7 +1,5 @@
 'use strict';
 
-import { mat4 } from 'gl-matrix';
-
 const vsSource = `#version 300 es
 in vec2 aPosition;
 in vec3 aColor;
@@ -61,9 +59,9 @@ function main() {
 
 
     const bufferData = new Float32Array([
-        0.0,  0.5,          1,0,0,
+        0.0,  0.5,          1,1,0,
        -0.5, -0.5,          0,1,0,
-        0.5, -0.5,          0,0,1,  
+        0.5, -0.5,          0,1,1,  
     ]);
     const buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
