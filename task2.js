@@ -2,13 +2,12 @@
 
 const vsSource = `#version 300 es
 in vec2 aPosition;
-uniform mat4 uModelViewMatrix;
 uniform mat4 uProjectionMatrix;
 in vec3 aColor;
 out vec3 vColor;
 
 void main() {
-    gl_Position = uProjectionMatrix * uModelViewMatrix * vec4(aPosition, 0.0, 1.0);
+    gl_Position = uProjectionMatrix * vec4(aPosition, 0.0, 1.0);
     //gl_Position =  vec4(aPosition, 0.0, 1.0);
     vColor = aColor;
 }`;
@@ -59,19 +58,8 @@ function main() {
 
     const aPosition = gl.getAttribLocation(program, 'aPosition');
     const aColor = gl.getAttribLocation(program,'aColor');
-
-    const uModelViewMatrix = gl.getUniformLocation(program,'uModelViewMatrix');
     const uProjectionMatrix = gl.getUniformLocation(program,'uProjectionMatrix');
 
-
-    const modelMatrix = new Float32Array([
-        1,0,0,0,
-        0,1,0,0,
-        0,0,1,0,
-        0,0,0,1,
-    ]);
-
-    gl.uniformMatrix4fv(uModelViewMatrix, false, modelMatrix);
 
     const bufferData = new Float32Array([
         -0.5,  0.5,         1,0,0,
