@@ -83,14 +83,15 @@ function main() {
 
     gl.drawArrays(gl.TRIANGLE_FAN, 0, 7);
     
-    let yChanger = 0.01;
-    let y = 0.0;
+    let angle = 0.0;
 
     const draw = () => {
         gl.clearColor(0.5, 0.2, 0.6, 1.0);
         gl.clear(gl.COLOR_BUFFER_BIT);
-        if (y < -0.75 || y > 0.5) yChanger = -yChanger;
-        y += yChanger;
+        if (angle === 360.0) angle = 0.0;
+        angle++;
+        const radian = Math.PI * angle / 180;
+        const y = Math.sin(radian) * 0.5;
         gl.uniform1f(uMove, y);
         gl.drawArrays(gl.TRIANGLE_FAN, 0, 7);
         requestAnimationFrame(draw);
