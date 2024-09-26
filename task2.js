@@ -122,6 +122,7 @@ function main() {
     const draw = () => {
         gl.clearColor(0.5, 0.2, 0.6, 1.0);
         gl.clear(gl.COLOR_BUFFER_BIT);
+        if (angle === 360.0) angle = 0.0;
         angle++;
         const radian = Math.PI * angle / 180;
         const cos = Math.cos(radian);
