@@ -2,14 +2,14 @@
 
 const vsSource = `#version 300 es
 in vec2 aPosition;
-uniform mat4 uModelViewMatrix;
-uniform mat4 uProjectionMatrix;
+uniform float uMove;
 in vec3 aColor;
 out vec3 vColor;
 
 void main() {
-    gl_Position = uProjectionMatrix * uModelViewMatrix * vec4(aPosition, 0.0, 1.0);
-    //gl_Position =  vec4(aPosition, 0.0, 1.0);
+    vec2 finalPosition = aPosition + vec2(0.0, uMove);
+    gl_Position = vec4(finalPosition, 0.0, 1.0);
+
     vColor = aColor;
 }`;
 
@@ -59,27 +59,8 @@ function main() {
 
     const aPosition = gl.getAttribLocation(program, 'aPosition');
     const aColor = gl.getAttribLocation(program,'aColor');
-
-    const uModelViewMatrix = gl.getUniformLocation(program,'uModelViewMatrix');
-    const uProjectionMatrix = gl.getUniformLocation(program,'uProjectionMatrix');
-
-    const modelMatrix = new Float32Array([
-        1,0,0,0,
-        0,1,0,0,
-        0,0,1,0,
-        0,0,0,1,
-    ]);
-
-    const projectionMatrix = new Float32Array([
-        1,0,0,0,
-        0,1,0,0,
-        0,0,1,0,
-        0,0,0,1,
-    ]);
-
-    gl.uniformMatrix4fv(uModelViewMatrix, false, modelMatrix);
-    gl.uniformMatrix4fv(uProjectionMatrix, false, projectionMatrix);
-
+    const uMove = gl.getUniformLocation(program,'uMove');
+    
     const bufferData = new Float32Array([
         0,0,				0,1,0,
         0.0, 0.5,     	    0,1,0,
@@ -101,4 +82,18 @@ function main() {
     gl.enableVertexAttribArray(aColor);
 
     gl.drawArrays(gl.TRIANGLE_FAN, 0, 7);
+    
+    let yChanger = 0.01;
+    let y = 0.0;
+
+    const draw = () => {
+        gl.clearColor(0.5, 0.2, 0.6, 1.0);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        if (y < -0.75 || y > 0.5) yChanger = -yChanger;
+        y += yChanger;
+        gl.uniform1f(uMove, y);
+        gl.drawArrays(gl.TRIANGLE_FAN, 0, 7);
+        requestAnimationFrame(draw);
+    };
+    draw();
 }
